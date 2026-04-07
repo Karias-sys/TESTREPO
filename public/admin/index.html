@@ -24,7 +24,12 @@
         try {
           const token = localStorage.getItem('token');
           if (!token) return document.getElementById('users').textContent = 'No token in localStorage. Login first and save token to localStorage as `token`.';
-          document.getElementById('who').textContent = 'authenticated';
+          try {
+            const payload = JSON.parse(atob(token.split('.')[1]));
+            document.getElementById('who').textContent = payload.username || payload.email || payload.sub || 'authenticated';
+          } catch (_) {
+            document.getElementById('who').textContent = 'authenticated';
+          }
           const res = await fetch('/admin/stats', { headers: { Authorization: 'Bearer ' + token } });
           if (!res.ok) {
             document.getElementById('users').textContent = 'Error: ' + res.status + ' ' + (await res.text());
