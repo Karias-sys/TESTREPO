@@ -36,13 +36,14 @@ class AQLite {
     this._persist();
   }
 
-  createUser({ username, email, password }) {
+  createUser({ username, email, password, isAdmin = false }) {
     this.data.lastId = (this.data.lastId || 0) + 1;
     const user = {
       id: this.data.lastId,
       username,
       email,
       password,
+      isAdmin,
       created_at: new Date().toISOString(),
     };
     this.data.users.push(user);
@@ -59,7 +60,7 @@ class AQLite {
   }
 
   getAllUsers() {
-    return this.data.users.map((u) => ({ id: u.id, username: u.username, email: u.email, created_at: u.created_at }));
+    return this.data.users.map((u) => ({ id: u.id, username: u.username, email: u.email, isAdmin: u.isAdmin || false, created_at: u.created_at }));
   }
 }
 
