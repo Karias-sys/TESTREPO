@@ -24,13 +24,13 @@
         try {
           const token = localStorage.getItem('token');
           if (!token) return document.getElementById('users').textContent = 'No token in localStorage. Login first and save token to localStorage as `token`.';
-          document.getElementById('who').textContent = 'authenticated';
           const res = await fetch('/admin/stats', { headers: { Authorization: 'Bearer ' + token } });
           if (!res.ok) {
             document.getElementById('users').textContent = 'Error: ' + res.status + ' ' + (await res.text());
             return;
           }
           const data = await res.json();
+          document.getElementById('who').textContent = data.currentUser;
           document.getElementById('count').textContent = data.userCount;
           document.getElementById('users').textContent = JSON.stringify(data.users, null, 2);
         } catch (err) {

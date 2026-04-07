@@ -30,7 +30,7 @@ module.exports = (aql) => {
       if (!user) return res.status(401).json({ error: 'Invalid credentials' });
       const valid = await bcrypt.compare(password, user.password);
       if (!valid) return res.status(401).json({ error: 'Invalid credentials' });
-      const payload = { id: user.id, email: user.email };
+      const payload = { id: user.id, email: user.email, role: user.role || 'user' };
       const token = jwt.sign(payload, process.env.JWT_SECRET || 'changeme', { expiresIn: '1h' });
       const { password: _pw, ...safeUser } = user;
       res.json({ token, user: safeUser });
