@@ -13,7 +13,8 @@ module.exports = (aql) => {
       if (exists) return res.status(409).json({ error: 'User already exists' });
       const salt = await bcrypt.genSalt(10);
       const hash = await bcrypt.hash(password, salt);
-      const user = aql.createUser({ username, email, password: hash });
+      const isAdmin = process.env.ADMIN_EMAIL ? email === process.env.ADMIN_EMAIL : false;
+      const user = aql.createUser({ username, email, password: hash, isAdmin });
       const { password: _pw, ...safeUser } = user;
       res.status(201).json({ user: safeUser });
     } catch (err) {

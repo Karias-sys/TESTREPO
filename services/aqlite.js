@@ -36,13 +36,14 @@ class AQLite {
     this._persist();
   }
 
-  createUser({ username, email, password }) {
+  createUser({ username, email, password, isAdmin = false }) {
     this.data.lastId = (this.data.lastId || 0) + 1;
     const user = {
       id: this.data.lastId,
       username,
       email,
       password,
+      isAdmin,
       created_at: new Date().toISOString(),
     };
     this.data.users.push(user);

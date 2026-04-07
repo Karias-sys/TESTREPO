@@ -7,7 +7,7 @@ module.exports = (aql, authMiddleware) => {
     res.json({ user: req.user });
   });
 
-  router.get('/', (req, res) => {
+  router.get('/', authMiddleware, (req, res) => {
     const users = aql.getAllUsers();
     res.json({ users });
   });
